@@ -1,0 +1,21 @@
+config:
+  target: "https://rickandmortyapi.com/"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: My First Artillery Test
+scenarios:
+  - name: "Get random character and episode"
+    flow:
+      - get:
+          url: "/api/character/random"
+      - post:
+          url: "/api/episode"
+          json:
+            episode: "{{ $randomCharacter.episode[0] }}"
+    validate:
+      - statusCode: 200
+      - bodyMatches: "type"
+      - responseTime:
+          average: 1000
+          p95: 3000
